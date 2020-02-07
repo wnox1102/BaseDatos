@@ -1,11 +1,13 @@
 import React, { Component } from 'react'
+import Axios from 'axios'
+import Section from './layout/section'
 
 export class form extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            email:'',
-            password:''
+            email: '',
+            password: ''
         }
     }
     /**
@@ -13,35 +15,60 @@ export class form extends Component {
      * @param e 
      * 
      */
-    handleChange =  (e)=>{
-        this.setState({email:e.target.value})
+    handleChange = (e) => {
+        this.setState({ email: e.target.value })
+    }
+
+
+    handleSubmit = (e) => {
+        e.preventDefault()
+        const username = document.getElementById('username').value
+        const password = document.getElementById('password').value
+
+        const data = {
+            'username': username,
+            'password': password
+        }
+        Axios.post(`http://127.0.0.1:8000/api/users/`, data)
+
     }
     /**
      * Metodo render : El cual va a renderizar todo el codigo HTML que se encuentre dentro de el 
      */
     render() {
-        
-        const email = this.state.email;
+
+
         return (
             <>
-                
-                <form>
-                    <div className='form-group'>
-                        <label for='email'>Email Address</label>
-                        <input value={email} type='email' className='form-control' id='email' aria-describedby="emailHelp" onChange={this.handleChange}/>
-                        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+
+                <div className='justify-content-center row'>
+                    <div className='col-sm-6'>
+                        < div className='card-profile shadow  mt--200 card'>
+                            <div className='card-title'>
+                                <br />
+                                <h4 className='text-center'>Crear un usuario</h4>
+                            </div>
+                            <div className='card-body'>
+
+                                <form method="post">
+                                    <div className='form-group'>
+                                        <label for='username'>Username</label>
+                                        <input className='form-control' id='username' name="username" />
+                                    </div>
+                                    <div className='form-group'>
+                                        <label for='password'> Password</label>
+                                        <input type="password" class="form-control" id="password" name="password"></input>
+                                    </div>
+                                    <div className='form-group form-check'>
+                                        <input type="checkbox" class="form-check-input" id="exampleCheck1" />
+                                        <label className="form-check-label" for="exampleCheck1">Check me out</label>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary" onClick={this.handleSubmit}>Submit</button>
+                                </form>
+                            </div>
+                        </div>
                     </div>
-                    <div className='form-group'>
-                        <label for="exampleInputPassword1"> Password</label>
-                        <input type="password" class="form-control" id="exampleInputPassword1"></input>
-                    </div>
-                    <div className='form-group form-check'>
-                        <input type="checkbox" class="form-check-input" id="exampleCheck1" />
-                        <label className="form-check-label" for="exampleCheck1">Check me out</label>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                </form>
-                <h1>Este es el correo ingresado: {email}</h1>
+                </div>
             </>
         )
     }
